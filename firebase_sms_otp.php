@@ -31,7 +31,7 @@
 <body class="container text-center">
     <div class="row justify-content-center">
         <div class="col-md-6 pt-4 ">
-            <h1>Firebase Authenticate With SMS OTP </h1>
+            <h1>Firebase Authentication With SMS OTP </h1>
             <div class="input-group mt-4">
                 <input id="phoneNumber" type="text" class="form-control" placeholder="+66987654321" aria-label="Example text with button addon" aria-describedby="button-addon1">
                 <button type="button" class="btn btn-primary" onclick="phonesend()">Request_OTP</button>
