@@ -34,15 +34,20 @@
             <h1>Firebase Authentication With SMS OTP </h1>
             <div class="input-group mt-4">
                 <input id="phoneNumber" type="text" class="form-control" placeholder="+66987654321" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                <button type="button" class="btn btn-primary" onclick="phonesend()">Request_OTP</button>
+                <button type="button" class="btn btn-primary" onclick="phoneSendOTP()">Request_OTP</button>
             </div>
+            <div id="showCapcha"></div>
             <div id="recaptcha-container"></div>
             <p></p>
-            <div id="show_vertify_otp" class="input-group mt-4 " style="display: none;">
-                <input type="number" id="OTP" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                <button type="button" class="btn btn-success" onclick="vertify_otp()">Submit</button>
+            <div id="show_vertify_otp" style="display: none;">
+                <div class="input-group mt-4 ">
+                    <input type="number" id="OTP" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <button type="button" class="btn btn-success" onclick="vertify_otp()">Submit</button>
+                </div>
             </div>
         </div>
+
+        <div id="show_message"></div>
     </div>
 
 </body>
@@ -66,10 +71,9 @@
 
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
 
-    function phonesend() {
-
+    function phoneSendOTP() {
         const phoneNumber = document.getElementById("phoneNumber").value;
-        const appVerifier = recaptchaVerifier;
+        const appVerifier = window.recaptchaVerifier;
         firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
             .then((confirmationResult) => {
                 console.log(confirmationResult)
@@ -77,6 +81,7 @@
                 document.getElementById('recaptcha-container').style.display = 'none';
                 document.getElementById('show_vertify_otp').style.display = 'block';
             }).catch((error) => {
+                document.getElementById("show_message").innerHTML = "" + error.message
                 console.log(error.message)
             });
     }
@@ -86,8 +91,10 @@
         confirmationResult.confirm(code).then((result) => {
             console.log(result)
             const user = result.user;
-            alert('OTP VERTIFY : Welcome :' + user);
+            alert('OTP VERTIFY : Welcome NEW USER');
+            document.getElementById("show_message").innerHTML = "Verified" 
         }).catch((error) => {
+            document.getElementById("show_message").innerHTML = "" + error.message
             console.log(error.message)
         });
     }
